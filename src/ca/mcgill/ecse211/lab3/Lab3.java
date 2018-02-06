@@ -14,7 +14,7 @@ public class Lab3 {
 	
 	/**Initializing any variables this class may need */
 	public static final double WHEEL_RAD = 1.82;
-	public static final double TRACK = 20.5;
+	public static final double TRACK = 20.4;
 	public static final double[] positionWaypoints = {0,2,1,1,2,2,2,1,1,0};
 	public static boolean obstacle_Avoidance = false;
 	
@@ -22,7 +22,7 @@ public class Lab3 {
 	public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
-	public static final Port us_Port = LocalEV3.get().getPort("S1");
+	public static final Port us_Port = LocalEV3.get().getPort("S2");
 	
 	public static void main(String[] args) throws ca.mcgill.ecse211.lab3.OdometerExceptions {
 		int buttonChoice;

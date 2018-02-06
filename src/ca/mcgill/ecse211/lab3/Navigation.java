@@ -7,13 +7,13 @@ public class Navigation {
 	private static OdometerData odometer;
 	private static double deltaX;
 	private static double deltaY;
-	private static double turnToTheta;
+	public static double turnToTheta;
 	private static double currentTheta;
 	private static double deltaTheta;
 	private static double distance;
-	private static int increment;
+	public static int increment;
 	private static double[] robotPosition = new double[3];
-	private static double[] nextWayPoint = new double[2];
+	public static double[] nextWayPoint = new double[2];
 	
 	
 	public static void navigationControl(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
@@ -52,13 +52,12 @@ public class Navigation {
 			currentTheta = robotPosition[2];
 			turnTo(leftMotor, rightMotor, leftRadius, rightRadius, track, turnToTheta, currentTheta);
 			travelTo(leftMotor, rightMotor, leftRadius, rightRadius, track, distance, us_Distance, obstacle_Avoidance);
-			odometer.setXYT(nextWayPoint[0], nextWayPoint[1], turnToTheta);
 		}
 		
 	}
 	
 	public static void travelTo(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
-		      double leftRadius, double rightRadius, double track, double distance, SampleProvider us_Distance, boolean obstacle_Avoidance) {
+		      double leftRadius, double rightRadius, double track, double distance, SampleProvider us_Distance, boolean obstacle_Avoidance) throws OdometerExceptions {
 		if(obstacle_Avoidance) {
 			Driver.obstacle_Driver(leftMotor, rightMotor, leftRadius, rightRadius, track, distance, us_Distance);
 		}

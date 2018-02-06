@@ -12,21 +12,22 @@ import ca.mcgill.ecse211.lab3.OdometerExceptions;
 
 public class Lab3 {
 	
-	/**Initializing any variables this class may need */
-	public static final double WHEEL_RAD = 1.82;
-	public static final double TRACK = 20.4;
-	public static final double[] positionWaypoints = {0,2,1,1,2,2,2,1,1,0};
+	/*Initializing any variables this class may need */
+	public static final double WHEEL_RAD = 1.61;
+	public static final double TRACK = 18.4;
+	public static final double[] positionWaypoints = {1,0,2,1,2,2,0,2,1,1};
 	public static boolean obstacle_Avoidance = false;
 	
-	/**Initializing Motors, and LCD */
+	/*Initializing Motors, and LCD */
 	public static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	public static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 	public static final Port us_Port = LocalEV3.get().getPort("S2");
 	
+	/**Main Class, runs upon robot start*/
 	public static void main(String[] args) throws ca.mcgill.ecse211.lab3.OdometerExceptions {
 		int buttonChoice;
-		/** Setting up the Odometer, display, and US Sensor */
+		/* Setting up the Odometer, display, and US Sensor */
 		Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
 		
 		Display odometryDisplay = new Display(lcd);
@@ -36,7 +37,7 @@ public class Lab3 {
 		final SampleProvider us_Distance = us_Sensor.getMode("Distance");
 		
 		do {
-			/** Hear we clear the display, and set up the menu options we want*/
+			/* Hear we clear the display, and set up the menu options we want */
 			lcd.clear();
 			
 			lcd.drawString("< Left | Right>", 0, 0);
@@ -47,16 +48,18 @@ public class Lab3 {
 			buttonChoice = Button.waitForAnyPress();
 		} while (buttonChoice != Button.ID_LEFT && buttonChoice != Button.ID_RIGHT);
 		
-		/**Begin the Odometer and Odometer Correction class */
+		/* Begin the Odometer and Odometer Correction threads */
 		Thread odoThread = new Thread(odometer);
 		odoThread.start();
 		Thread odoDisplayThread = new Thread(odometryDisplay);
 		odoDisplayThread.start();
 		
+		/* If the user decides to run obstacle avoidance, this boolean will be set to true for use later on */
 		if (buttonChoice == Button.ID_RIGHT) {
 			obstacle_Avoidance = true;
 		}
 		
+		/* This new threads starts the navigation thread. The obstacle avoidance boolean variable and Ultrasonic sensor instance is also passed */
 		new Thread() {
 			public void run() {
 				try {

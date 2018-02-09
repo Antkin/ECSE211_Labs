@@ -1,5 +1,7 @@
 package ca.mcgill.ecse211.lab3;
 
+import java.lang.reflect.Array;
+
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.SampleProvider;
 /** Navigation class calculates the distances and turning angles needed for navigation */
@@ -36,7 +38,7 @@ public class Navigation {
 		 * calculates the necessary operations for every waypoint
 		 */
 		odometer = Odometer.getOdometer();
-		for(increment = 0; increment < 5; increment++) {
+		for(increment = 0; increment < 4; increment++) {
 			System.out.println("This is the "+increment+" turn");
 			//Robot position determined
 			robotPosition = odometer.getXYT();

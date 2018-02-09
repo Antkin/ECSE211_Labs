@@ -15,7 +15,7 @@ public class Lab3 {
 	/*Initializing any variables this class may need */
 	public static final double WHEEL_RAD = 1.61;
 	public static final double TRACK = 18.4;
-	public static final double[] positionWaypoints = {1,0,2,1,2,2,0,2,1,1};
+	public static final double[] positionWaypoints = {2,1,1,1,1,2,2,0};
 	public static boolean obstacle_Avoidance = false;
 	
 	/*Initializing Motors, and LCD */

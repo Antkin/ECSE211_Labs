@@ -62,9 +62,6 @@ public class Driver {
 		  //If the rotation speeds of both motors are 0, it must be done traveling. Breaks the loop
 		  // and returns to nav class.
 		  if(leftMotor.getRotationSpeed() == 0 && rightMotor.getRotationSpeed() == 0) {
-			  odometer.setX(Navigation.nextWayPoint[0]);
-			  odometer.setY(Navigation.nextWayPoint[1]);
-			  odometer.setTheta(Navigation.turnToTheta);
 			  break;
 		  }
 		  

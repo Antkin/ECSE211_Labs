@@ -38,19 +38,19 @@ public class Navigation {
 		 * calculates the necessary operations for every waypoint
 		 */
 		odometer = Odometer.getOdometer();
-		for(increment = 0; increment < 2; increment++) {
-			System.out.println("This is the #"+increment+" leg");
+		for(increment = 0; increment < 5; increment++) {
+			//System.out.println("This is the #"+increment+" leg");
 			//Robot position determined
 			robotPosition = odometer.getXYT();
-			System.out.println("Current X position is: "+robotPosition[0]+"     Current Y position is: "+robotPosition[1]+"       Current Theta is: "+robotPosition[2]);
+			//System.out.println("Current X position is: "+robotPosition[0]+"     Current Y position is: "+robotPosition[1]+"       Current Theta is: "+robotPosition[2]);
 			//Next waypoint is set to the nextWayPoint variable
 			nextWayPoint[0] = positionWaypoints[increment*2] * 30.48;
 			nextWayPoint[1] = positionWaypoints[increment*2 + 1] * 30.48;
 			//DeltaX and DeltaY are determined
 			deltaX = nextWayPoint[0] - robotPosition[0];
 			deltaY = nextWayPoint[1] - robotPosition[1];
-			System.out.println("Delta X is: "+deltaX);
-			System.out.println("Delta Y is: "+deltaY);
+			//System.out.println("Delta X is: "+deltaX);
+			//System.out.println("Delta Y is: "+deltaY);
 			//Turning angle is determined
 			turnToTheta = Math.atan(deltaX/deltaY);
 			turnToTheta = Math.toDegrees(turnToTheta);
@@ -108,15 +108,15 @@ public class Navigation {
 		else if(deltaTheta < -180) {
 			deltaTheta = deltaTheta + 360;
 		}
-		System.out.println("CurrentTheta is: "+currentTheta);
-		System.out.println("turnToTheta is: "+turnToTheta);
-		System.out.println("DeltaTheta is"+deltaTheta);
+		//System.out.println("CurrentTheta is: "+currentTheta);
+		//System.out.println("turnToTheta is: "+turnToTheta);
+		//System.out.println("DeltaTheta is"+deltaTheta);
 		if (deltaTheta < 0) {
-			System.out.println("Turning left!");
+			//System.out.println("Turning left!");
 			Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, deltaTheta);
 		}
 		else if (deltaTheta > 0) {
-			System.out.println("Turning right!");
+			//System.out.println("Turning right!");
 			Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, deltaTheta);
 		}
 		

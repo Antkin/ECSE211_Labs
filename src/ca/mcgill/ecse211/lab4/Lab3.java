@@ -1,4 +1,4 @@
-package ca.mcgill.ecse211.lab3;
+package ca.mcgill.ecse211.lab4;
 
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
@@ -8,7 +8,7 @@ import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
-import ca.mcgill.ecse211.lab3.OdometerExceptions;
+import ca.mcgill.ecse211.lab4.OdometerExceptions;
 
 public class Lab3 {
 	
@@ -25,7 +25,7 @@ public class Lab3 {
 	public static final Port us_Port = LocalEV3.get().getPort("S2");
 	
 	/**Main Class, runs upon robot start*/
-	public static void main(String[] args) throws ca.mcgill.ecse211.lab3.OdometerExceptions {
+	public static void main(String[] args) throws ca.mcgill.ecse211.lab4.OdometerExceptions {
 		int buttonChoice;
 		/* Setting up the Odometer, display, and US Sensor */
 		Odometer odometer = Odometer.getOdometer(leftMotor, rightMotor, TRACK, WHEEL_RAD);
@@ -60,7 +60,7 @@ public class Lab3 {
 		}
 		
 		/* This new threads starts the navigation thread. The obstacle avoidance boolean variable and Ultrasonic sensor instance is also passed */
-		new Thread() {
+		/*new Thread() {
 			public void run() {
 				try {
 					Navigation.navigationControl(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK, positionWaypoints, us_Distance, obstacle_Avoidance);
@@ -69,7 +69,7 @@ public class Lab3 {
 				}
 			}
 		}.start();
-		
+		*/
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		
 		System.exit(0);

@@ -8,7 +8,7 @@
  * @author Michael Smith
  */
 
-package ca.mcgill.ecse211.lab3;
+package ca.mcgill.ecse211.lab4;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
@@ -28,8 +28,6 @@ public class Odometer extends OdometerData implements Runnable {
   private final double TRACK;
   private final double WHEEL_RAD;
 
-  private double[] position;
-  
   private double distL, distR, deltaD, deltaT, dX, dY, theta, x, y;
 
 

@@ -4,6 +4,7 @@
 package ca.mcgill.ecse211.lab3;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.robotics.RegulatedMotor;
 import lejos.robotics.SampleProvider;
 
 /**
@@ -138,13 +139,21 @@ public class Driver {
     } catch (InterruptedException e) {
       // There is nothing to be done here
     }
-
-      leftMotor.setSpeed(FORWARD_SPEED);
-      rightMotor.setSpeed(FORWARD_SPEED);
+    	
+    	leftMotor.synchronizeWith(new RegulatedMotor[] {rightMotor});
+    	leftMotor.startSynchronization();
+    	
+    	leftMotor.setSpeed(FORWARD_SPEED);
+    	rightMotor.setSpeed(FORWARD_SPEED);
       
-      //Changed the tile size so that it would go the proper distance for our lab
-      leftMotor.rotate(convertDistance(leftRadius, distance), true);
-      rightMotor.rotate(convertDistance(rightRadius, distance), false);
+    	//Changed the tile size so that it would go the proper distance for our lab
+    	leftMotor.rotate(convertDistance(leftRadius, distance), true);
+    	rightMotor.rotate(convertDistance(rightRadius, distance), false);
+    	
+    	leftMotor.endSynchronization();
+    	
+    	leftMotor.waitComplete();
+    	rightMotor.waitComplete();
   }
   
   /** The turn method, its directs the motors to turn by a certain theta. Can turn both 

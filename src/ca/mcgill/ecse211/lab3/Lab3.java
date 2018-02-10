@@ -13,9 +13,9 @@ import ca.mcgill.ecse211.lab3.OdometerExceptions;
 public class Lab3 {
 	
 	/*Initializing any variables this class may need */
-	public static final double WHEEL_RAD = 1.61;
-	public static final double TRACK = 18.4;
-	public static final double[] positionWaypoints = {2,1,1,1,1,2,2,0};
+	public static final double WHEEL_RAD = 1.60;
+	public static final double TRACK = 18.45;
+	public static final double[] positionWaypoints = {0,2,2,2};
 	public static boolean obstacle_Avoidance = false;
 	
 	/*Initializing Motors, and LCD */

@@ -38,8 +38,8 @@ public class Navigation {
 		 * calculates the necessary operations for every waypoint
 		 */
 		odometer = Odometer.getOdometer();
-		for(increment = 0; increment < 4; increment++) {
-			System.out.println("This is the "+increment+" turn");
+		for(increment = 0; increment < 2; increment++) {
+			System.out.println("This is the #"+increment+" leg");
 			//Robot position determined
 			robotPosition = odometer.getXYT();
 			System.out.println("Current X position is: "+robotPosition[0]+"     Current Y position is: "+robotPosition[1]+"       Current Theta is: "+robotPosition[2]);

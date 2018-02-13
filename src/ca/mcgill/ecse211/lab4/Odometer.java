@@ -131,14 +131,6 @@ public class Odometer extends OdometerData implements Runnable {
       dY = deltaD*Math.cos(theta);
       x = x + dX;
       y = y + dY;
-      if(i == 100) {
-    	  System.out.println("dX in odo is: "+dX);
-          System.out.println("dY in odo is: "+dY);
-          System.out.println("x in odo is: "+x);
-          System.out.println("y in odo is: "+y);
-          i = 0;
-      }
-      i++;
       //Only dX, dY, and deltaT need to be passed to the update method
       odo.update(dX, dY, deltaT);
       

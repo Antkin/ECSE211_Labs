@@ -7,7 +7,12 @@ import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
-
+/**
+ * 
+ *	This is the ultrasonic localizer class, it takes 2 ultrasonic measurements 
+ *	and finds out its correct theta
+ *
+ */
 public class UltrasonicLocalizer {
 	
 	/* Initializing the sensor and any variables */
@@ -24,11 +29,18 @@ public class UltrasonicLocalizer {
 	final static SampleProvider us_Distance = us_Sensor.getMode("Distance");
 	public static float[] us_sample = new float[us_Distance.sampleSize()];
 	
+	/**
+	 * The falling edge method localizes the robot if it is facing away from the wall
+	 */
 	public static void falling_Edge(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, double leftRadius, double rightRadius, double track) throws OdometerExceptions {
+		/* Get an instance of the odo, and prepare to start fetching samples */
 		odometer = Odometer.getOdometer();
 		us_Distance.fetchSample(us_sample, 0);
 		detected_Distance = (int) (us_sample[0] * 100);
 		
+		/*
+		 * Set acceleration to 125 and begin rotating
+		 */
 		leftMotor.setAcceleration(125);
 		rightMotor.setAcceleration(125);
 		
@@ -37,6 +49,9 @@ public class UltrasonicLocalizer {
 		leftMotor.setSpeed(rotate_Speed);
 		rightMotor.setSpeed(rotate_Speed);
 		
+		/*
+		 * Once the distance falls below 40, we record the position and start turning the other way
+		 */
 		while(detected_Distance > 40) {
 			us_Distance.fetchSample(us_sample, 0);
 			detected_Distance = (int) (us_sample[0] * 100);
@@ -49,6 +64,9 @@ public class UltrasonicLocalizer {
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 		
+		/*
+		 * This was included to prevent us from reading the same wall twice
+		 */
 		Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, -60);
 		
 		rightMotor.forward();
@@ -56,6 +74,9 @@ public class UltrasonicLocalizer {
 		rightMotor.setSpeed(rotate_Speed);
 		leftMotor.setSpeed(rotate_Speed);
 		
+		/*
+		 * Fetch another sample before we begin searching for a distance > 40
+		 */
 		us_Distance.fetchSample(us_sample, 0);
 		detected_Distance = (int) (us_sample[0] * 100);
 		
@@ -71,25 +92,30 @@ public class UltrasonicLocalizer {
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 		
+		/*
+		 * We run the correction code next and update the odo
+		 * Finish by turning to 0 degrees
+		 */
+		
 		if(alpha < beta) {
 			fix_Theta = 225 - (alpha+beta)/2;
 		}
 		else if(alpha >= beta) {
 			fix_Theta = 45 - (alpha+beta)/2;
 		}
-		
-		//System.out.println("Alpha is "+alpha+"     Beta is "+beta);
-		//System.out.println("Fix theta is "+fix_Theta);
-		//System.out.println("This is the falling edge method");
 		
 		odometer.setTheta(odometer.getTheta() + fix_Theta);
 		
 		Navigation.turnTo(leftMotor, rightMotor, leftRadius, rightRadius, track, 0.0, odometer.getTheta());
-		
-		
 	}
 	
+	/**
+	 * The rising edge method localizes if the robot is facing towards the wall
+	 */
 	public static void rising_Edge(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, double leftRadius, double rightRadius, double track) throws OdometerExceptions {
+		/*
+		 * Rising method works the same as above, just in the other direction 
+		 */
 		odometer = Odometer.getOdometer();
 		us_Distance.fetchSample(us_sample, 0);
 		detected_Distance = (int) (us_sample[0] * 100);
@@ -138,16 +164,16 @@ public class UltrasonicLocalizer {
 		leftMotor.stop(true);
 		rightMotor.stop(false);
 		
+		/*
+		 * The correction is opposite for rising method however.
+		 */
+		
 		if(alpha < beta) {
 			fix_Theta = 45 - (alpha+beta)/2;
 		}
 		else if(alpha >= beta) {
 			fix_Theta = 225 - (alpha+beta)/2;
 		}
-		
-		//System.out.println("Alpha is "+alpha+"     Beta is "+beta);
-		//System.out.println("Fix theta is "+fix_Theta);
-		//System.out.println("This is the rising edge method");
 		
 		odometer.setTheta(odometer.getTheta() + fix_Theta);
 		

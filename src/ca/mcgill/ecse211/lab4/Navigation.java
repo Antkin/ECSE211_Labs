@@ -34,21 +34,16 @@ public class Navigation {
 		/* Here we get the odometer instance for use in the calculations, and begin a for loop which 
 		 * calculates the necessary operations for every waypoint
 		 */
-		//System.out.println("Running nav!");
 		odometer = Odometer.getOdometer();
 		for(increment = 0; increment < 1; increment++) {
-			//System.out.println("This is the #"+increment+" leg");
 			//Robot position determined
 			robotPosition = odometer.getXYT();
-			//System.out.println("Current X position is: "+robotPosition[0]+"     Current Y position is: "+robotPosition[1]+"       Current Theta is: "+robotPosition[2]);
 			//Next waypoint is set to the nextWayPoint variable
 			nextWayPoint[0] = positionWaypoints[increment*2] * 30.48;
 			nextWayPoint[1] = positionWaypoints[increment*2 + 1] * 30.48;
 			//DeltaX and DeltaY are determined
 			deltaX = nextWayPoint[0] - robotPosition[0];
 			deltaY = nextWayPoint[1] - robotPosition[1];
-			//System.out.println("Delta X is: "+deltaX);
-			//System.out.println("Delta Y is: "+deltaY);
 			//Turning angle is determined
 			turnToTheta = Math.atan(deltaX/deltaY);
 			turnToTheta = Math.toDegrees(turnToTheta);
@@ -71,7 +66,6 @@ public class Navigation {
 					turnToTheta = 180;
 				}
 			}
-			//System.out.println(turnToTheta);
 			//Distance we need to travel is determined
 			distance = Math.sqrt(Math.pow(deltaX, 2)+Math.pow(deltaY, 2));
 			currentTheta = robotPosition[2];
@@ -85,7 +79,6 @@ public class Navigation {
 	/** The travelTo method determined whether obstacle avoidance is necessary, and directs the robot */
 	public static void travelTo(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor,
 		      double leftRadius, double rightRadius, double track, double distance) throws OdometerExceptions {
-		//System.out.println("Driving a distance of: "+distance);
 		Driver.drive(leftMotor, rightMotor, leftRadius, rightRadius, track, distance);
 	}
 	
@@ -96,21 +89,27 @@ public class Navigation {
 			currentTheta = 0;
 		}
 		deltaTheta  = turnToTheta - currentTheta;
+		
+		/*
+		 * The next statements are using to fix theta in certain cases where the theta calculated would be incorrect by a known
+		 * number of degrees
+		 */
+		
 		if(deltaTheta > 180) {
 			deltaTheta = deltaTheta - 360;
 		}
 		else if(deltaTheta < -180) {
 			deltaTheta = deltaTheta + 360;
 		}
-		//System.out.println("CurrentTheta is: "+currentTheta);
-		//System.out.println("turnToTheta is: "+turnToTheta);
-		//System.out.println("DeltaTheta is"+deltaTheta);
+		
+		/*
+		 * Based on the value of delta theta, we turn in a certain direction
+		 */
+		
 		if (deltaTheta < 0) {
-			//System.out.println("Turning left!");
 			Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, deltaTheta);
 		}
 		else if (deltaTheta > 0) {
-			//System.out.println("Turning right!");
 			Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, deltaTheta);
 		}
 		

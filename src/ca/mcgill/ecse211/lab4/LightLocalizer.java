@@ -28,16 +28,33 @@ public class LightLocalizer {
 		  return median;
 	  }
 	
+	/**
+	 * The light localizer uses a light sensor to detect black lines and find the x and y location
+	 * of the robot
+	 */
 	public static void light_Localizer(EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, double leftRadius, double rightRadius, double track) throws OdometerExceptions {
+		/*
+		 * Here we instance the sensor and odometer
+		 */
 		Port light_Sensor_Port = LocalEV3.get().getPort("S1");
 		light_Sensor = new EV3ColorSensor(light_Sensor_Port);
 		light_Sensor.setFloodlight(6);
 		odometer = Odometer.getOdometer();
 		
+		/*
+		 * We take 50 light samples, find the median, and compare our current light value to the median
+		 * This method allows the light detection to work for any kind of lighting, except lighting
+		 * that changes during the trials
+		 */
+		
 		for(increment = 0; increment < 50; increment++) {
 			light_Sensor.getRedMode().fetchSample(current_Light_Value, 0);
 			light_samples[increment] = current_Light_Value[0];
 		}
+		
+		/*
+		 * Set motor acceleration and begin moving forward
+		 */
 		
 		leftMotor.setAcceleration(75);
 		rightMotor.setAcceleration(75);
@@ -47,6 +64,11 @@ public class LightLocalizer {
 		leftMotor.setSpeed(75);
 		rightMotor.setSpeed(75);
 		
+		/*
+		 * The sensor continously takes samples while driving, 
+		 * once a black line is detected we stop and back up to the original 
+		 * tile
+		 */
 		while(true) {
 			light_Sensor.getRedMode().fetchSample(current_Light_Value, 0);
 			if(increment >= 49) {
@@ -63,13 +85,15 @@ public class LightLocalizer {
 				rightMotor.setSpeed(0);
 				break;
 			}
-			//System.out.println("Testing1");
 		}
 		
 		while(leftMotor.getRotationSpeed() != 0 && rightMotor.getRotationSpeed() != 0);
 		
 		Driver.drive(leftMotor, rightMotor, leftRadius, rightRadius, track, -15);
 		
+		/*
+		 * We turn 90 degrees, and repeat the same process for the x = 0 line
+		 */
 		Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, 90);
 		
 		leftMotor.setAcceleration(75);
@@ -96,18 +120,25 @@ public class LightLocalizer {
 				rightMotor.setSpeed(0);
 				break;
 			}
-			//System.out.println("Testing2");
 		}
 		
 		while(leftMotor.getRotationSpeed() != 0 && rightMotor.getRotationSpeed() != 0);
 		
 		Driver.drive(leftMotor, rightMotor, leftRadius, rightRadius, track, -15);
 		
+		/*
+		 * We had some odometer problems so we have the robot end up in a known position
+		 * and we reset the x and y coordinates
+		 */
+		
 		odometer.setX(-15);
 		odometer.setY(-15);
 		
+		/*
+		 * Finish off the routine by travelling to 0,0 and turning to 0 degrees
+		 */
+		
 		Navigation.navigationControl(leftMotor, rightMotor, leftRadius, rightRadius, track, final_position);
-		System.out.println("Finished nav, turning now.");
 		Navigation.turnTo(leftMotor, rightMotor, leftRadius, rightRadius, track, 0, odometer.getTheta());
 		
 	}

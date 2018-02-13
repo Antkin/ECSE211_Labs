@@ -50,23 +50,25 @@ public class Lab4 {
 		odoDisplayThread.start();
 		
 		falling_edge = false; 
-		/* If the user decides to run obstacle avoidance, this boolean will be set to true for use later on */
+		
+		/* 
+		 * If the user clicks the right button we run the falling edge routine, otherwise we run
+		 * rising edge
+		 */
+		
 		if (buttonChoice == Button.ID_RIGHT) {
 			falling_edge = true;
-			//System.out.println("Right button chosen, running falling edge");
 		}
 		
-		/* This new threads starts the navigation thread. The obstacle avoidance boolean variable and Ultrasonic sensor instance is also passed */
+		/* This new threads starts the ultrasonic localizer thread. If the falling edge button was selected we run that method */
 		
 		new Thread() {
 			public void run() {
 				try {
 					if(falling_edge == true) {
-						//System.out.println("Running falling edge");
 						UltrasonicLocalizer.falling_Edge(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK);
 					}
 					else if (falling_edge == false) {
-						//System.out.println("Running rising edge");
 						UltrasonicLocalizer.rising_Edge(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK);
 					}
 				} catch (OdometerExceptions e) {
@@ -76,6 +78,10 @@ public class Lab4 {
 		}.start();
 
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+		
+		/*
+		 * This thread belows runs the light localizer once the ultrasonic localizer is complete
+		 */
 		
 		new Thread() {
 			public void run() {
@@ -87,6 +93,9 @@ public class Lab4 {
 			}
 		}.start();
 		 
+		/*
+		 * We finish and exit the program
+		 */
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		

@@ -25,27 +25,17 @@ public class Driver {
 
     // Sleep for 2 seconds
     try {
-      Thread.sleep(500);
+      Thread.sleep(1000);
     } catch (InterruptedException e) {
       // There is nothing to be done here
     }
-    	
-    	leftMotor.synchronizeWith(new RegulatedMotor[] {rightMotor});
-    	leftMotor.startSynchronization();
     	
     	leftMotor.setSpeed(FORWARD_SPEED);
     	rightMotor.setSpeed(FORWARD_SPEED);
       
     	//Changed the tile size so that it would go the proper distance for our lab
     	leftMotor.rotate(convertDistance(leftRadius, distance), true);
-    	rightMotor.rotate(convertDistance(rightRadius, distance), true);
-    	
-    	leftMotor.endSynchronization();
-    	
-    	leftMotor.waitComplete();
-        rightMotor.waitComplete();
-    	
- 
+    	rightMotor.rotate(convertDistance(rightRadius, distance), false);
   }
   
   /** The turn method, its directs the motors to turn by a certain theta. Can turn both 

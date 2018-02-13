@@ -56,13 +56,13 @@ public class LightLocalizer {
 		 * Set motor acceleration and begin moving forward
 		 */
 		
-		leftMotor.setAcceleration(75);
-		rightMotor.setAcceleration(75);
+		leftMotor.setAcceleration(50);
+		rightMotor.setAcceleration(50);
 		
 		leftMotor.forward();
 		rightMotor.forward();
-		leftMotor.setSpeed(75);
-		rightMotor.setSpeed(75);
+		leftMotor.setSpeed(50);
+		rightMotor.setSpeed(50);
 		
 		/*
 		 * The sensor continously takes samples while driving, 
@@ -71,14 +71,14 @@ public class LightLocalizer {
 		 */
 		while(true) {
 			light_Sensor.getRedMode().fetchSample(current_Light_Value, 0);
-			if(increment >= 49) {
+			if(increment >= 50) {
 				increment = 0;
 			}
 			light_samples[increment] = current_Light_Value[0];
 			increment++;
 			median = median_Finder(light_samples);
 			
-			if(Math.abs(current_Light_Value[0] - median) >= .06) {
+			if(Math.abs(current_Light_Value[0] - median) >= .03) {
 				odometer.setY(0);
 				Sound.beep();
 				leftMotor.setSpeed(0);
@@ -96,24 +96,29 @@ public class LightLocalizer {
 		 */
 		Driver.turn(leftMotor, rightMotor, leftRadius, rightRadius, track, 90);
 		
-		leftMotor.setAcceleration(75);
-		rightMotor.setAcceleration(75);
+		for(increment = 0; increment < 50; increment++) {
+			light_Sensor.getRedMode().fetchSample(current_Light_Value, 0);
+			light_samples[increment] = current_Light_Value[0];
+		}
+		
+		leftMotor.setAcceleration(50);
+		rightMotor.setAcceleration(50);
 		
 		leftMotor.forward();
 		rightMotor.forward();
-		leftMotor.setSpeed(75);
-		rightMotor.setSpeed(75);
+		leftMotor.setSpeed(50);
+		rightMotor.setSpeed(50);
 		
 		while(true) {
 			light_Sensor.getRedMode().fetchSample(current_Light_Value, 0);
-			if(increment >= 49) {
+			if(increment >= 50) {
 				increment = 0;
 			}
 			light_samples[increment] = current_Light_Value[0];
 			increment++;
 			median = median_Finder(light_samples);
 			
-			if(Math.abs(current_Light_Value[0] - median) >= .06) {
+			if(Math.abs(current_Light_Value[0] - median) >= .03) {
 				odometer.setY(0);
 				Sound.beep();
 				leftMotor.setSpeed(0);

@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.lab4;
 
+import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
@@ -169,15 +170,18 @@ public class UltrasonicLocalizer {
 		 */
 		
 		if(alpha < beta) {
-			fix_Theta = 45 - (alpha+beta)/2;
+			fix_Theta = 40 - (alpha+beta)/2;
 		}
 		else if(alpha >= beta) {
-			fix_Theta = 225 - (alpha+beta)/2;
+			fix_Theta = 220 - (alpha+beta)/2;
 		}
 		
 		odometer.setTheta(odometer.getTheta() + fix_Theta);
 		
 		Navigation.turnTo(leftMotor, rightMotor, leftRadius, rightRadius, track, 0.0, odometer.getTheta());
+		
+		while(Button.waitForAnyPress() != Button.ID_UP);
+		LightLocalizer.light_Localizer(leftMotor, rightMotor, 1.60, 1.60, 18.55);
 	}
 	
 }

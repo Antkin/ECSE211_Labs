@@ -46,8 +46,8 @@ public class Lab4 {
 		/* Begin the Odometer and Odometer Correction threads */
 		Thread odoThread = new Thread(odometer);
 		odoThread.start();
-		Thread odoDisplayThread = new Thread(odometryDisplay);
-		odoDisplayThread.start();
+		//Thread odoDisplayThread = new Thread(odometryDisplay);
+		//odoDisplayThread.start();
 		
 		falling_edge = false; 
 		
@@ -71,22 +71,6 @@ public class Lab4 {
 					else if (falling_edge == false) {
 						UltrasonicLocalizer.rising_Edge(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK);
 					}
-				} catch (OdometerExceptions e) {
-					e.printStackTrace();
-				}
-			}
-		}.start();
-
-		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
-		
-		/*
-		 * This thread belows runs the light localizer once the ultrasonic localizer is complete
-		 */
-		
-		new Thread() {
-			public void run() {
-				try {
-					LightLocalizer.light_Localizer(leftMotor, rightMotor, WHEEL_RAD, WHEEL_RAD, TRACK);
 				} catch (OdometerExceptions e) {
 					e.printStackTrace();
 				}

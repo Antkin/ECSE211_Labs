@@ -140,6 +140,9 @@ public class OdometerData {
   public double getY() {
 	  return y;
   }
+  public double getTheta() {
+	  return theta;
+  }
 
   /**
    * Overrides the values of x, y and theta. Use for odometry correction.

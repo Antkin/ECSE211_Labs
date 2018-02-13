@@ -18,6 +18,7 @@ public class Odometer extends OdometerData implements Runnable {
   private static Odometer odo = null; // Returned as singleton
 
   // Motors and related variables
+  private int i = 0;
   private int leftMotorTachoCount;
   private int rightMotorTachoCount;
   private int pastleftMotorTachoCount;
@@ -28,6 +29,8 @@ public class Odometer extends OdometerData implements Runnable {
   private final double TRACK;
   private final double WHEEL_RAD;
 
+  private double[] position;
+  
   private double distL, distR, deltaD, deltaT, dX, dY, theta, x, y;
 
 
@@ -117,11 +120,25 @@ public class Odometer extends OdometerData implements Runnable {
       deltaT = ((distL-distR)/this.TRACK);
       theta = theta + deltaT;
       //Just some code to keep theta within 360 degrees
+      if(theta > 2*Math.PI) {
+    	  theta = theta - 2*Math.PI;
+      }
+      if(theta < 0) {
+    	  theta = theta + 2*Math.PI;
+      }
       //dX, dY, x, and y are calculated
       dX = deltaD*Math.sin(theta);
       dY = deltaD*Math.cos(theta);
       x = x + dX;
       y = y + dY;
+      if(i == 100) {
+    	  System.out.println("dX in odo is: "+dX);
+          System.out.println("dY in odo is: "+dY);
+          System.out.println("x in odo is: "+x);
+          System.out.println("y in odo is: "+y);
+          i = 0;
+      }
+      i++;
       //Only dX, dY, and deltaT need to be passed to the update method
       odo.update(dX, dY, deltaT);
       

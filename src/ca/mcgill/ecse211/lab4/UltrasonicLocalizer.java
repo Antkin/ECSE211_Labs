@@ -108,6 +108,9 @@ public class UltrasonicLocalizer {
 		odometer.setTheta(odometer.getTheta() + fix_Theta);
 		
 		Navigation.turnTo(leftMotor, rightMotor, leftRadius, rightRadius, track, 0.0, odometer.getTheta());
+		
+		while(Button.waitForAnyPress() != Button.ID_UP);
+		LightLocalizer.light_Localizer(leftMotor, rightMotor, 1.60, 1.60, 18.55);
 	}
 	
 	/**
